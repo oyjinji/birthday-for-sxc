@@ -10,10 +10,10 @@
   <link rel="icon" type="image/svg+xml" href="assets/star.svg">
   <link rel="preload" as="image" href="assets/chiikawa-v2.webp">
   <link rel="preload" as="image" href="assets/hachiware-v2.webp">
-  <link rel="stylesheet" href="styles.css?v=4">
-  <script src="assets/audio-data.js?v=4" defer></script>
-  <script src="audio.js?v=4" defer></script>
-  <script src="app.js?v=4" defer></script>
+  <link rel="stylesheet" href="styles.css?v=5">
+  <script src="assets/audio-data.js?v=5" defer></script>
+  <script src="audio.js?v=5" defer></script>
+  <script src="app.js?v=5" defer></script>
 </head>
 <body>
   <main id="experience" data-scene="intro" aria-label="星海生日惊喜">
@@ -75,6 +75,7 @@
         <button class="tool sound" id="soundButton" type="button" aria-label="开启海浪、生日歌与烟花声音" aria-pressed="false" title="开启海浪、生日歌与烟花声音"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9H8L13 5V19L8 15H4Z"/><path class="sound-on" d="M17 8Q22 12 17 16M19 4Q27 12 19 20"/><path class="sound-off" d="M17 9L22 15M22 9L17 15"/></svg></button>
       </div>
     </header>
+    <button id="audioRetry" class="audio-retry" type="button" hidden>听不到？重试</button>
     <section class="scene-ui intro-ui" aria-label="第一幕：星海">
       <button class="enter-button" id="enterButton" type="button"><span class="tiny-star" aria-hidden="true">✧</span><span>轻触画面，开启惊喜</span><span class="enter-note">有一份小小的心意，想送给你</span></button>
     </section>

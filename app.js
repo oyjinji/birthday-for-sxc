@@ -353,7 +353,7 @@
     }catch(_){toast('当前浏览器未开放轻晃，依然可以触摸体验');}
   }
 
-  const audio = new window.BeachSound({button:$('soundButton'),notify:toast});
+  const audio = new window.BeachSound({button:$('soundButton'),retryButton:$('audioRetry'),notify:toast});
 
   function animate(now) {
     frame=requestAnimationFrame(animate);

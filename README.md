@@ -2,7 +2,20 @@
 
 可直接部署的竖屏静态生日网页，无需依赖、构建或后端。
 
-## 背景声音（v4）
+## 手机播放修正（v5）
+
+- iPhone、iPad 和手机微信优先使用原生 MP3 播放海浪与生日音乐；烟花保留 Web Audio 同步混音，必要时回退到五发预混音。
+- 用户点击声音按钮时，在浏览器支持的情况下设置 `navigator.audioSession.type = "playback"`，并同步启动一个静音采样以解锁音频上下文。
+- 手机播放路径必须观察到播放器进度前进后才报告已开启，不再只根据接口返回成功判断。
+- 声音开启后新增「听不到？重试」，用于再次触发用户手势并切换播放方式。
+- 上传时必须保留 `assets/background-v5.mp3`、`assets/fireworks-v5.mp3` 以及全部原有脚本和资源。GitHub Pages 项目目录可直接使用相对资源路径，无需更改服务器设置。
+- 更新后等待 Pages 部署完成，再在原网址后加 `?audio=5` 打开，帮助避开旧版页面缓存。
+
+已完成电脑浏览器的两条播放路径与回归检查；真正 iOS Safari/微信及静音键、媒体音量和输出设备的行为仍需手机确认。
+
+有关播放会话类型参见 [MDN AudioSession.type](https://developer.mozilla.org/en-US/docs/Web/API/AudioSession/type)；API 不支持时网页会跳过该设置。
+
+## 背景声音
 
 - 海浪更换为塞舌尔沙滩的小浪拍岸录音，与上一版使用不同素材。
 - 叠加低音量、无人声的音乐盒版生日旋律，留出短暂间奏，海浪始终保留。
@@ -33,7 +46,8 @@ ZIP 解压后，把里面的全部文件上传到静态站点根目录；确保 
 - `styles.css`：布局、配色、按下反馈与动画。
 - `app.js`：镜头、许愿、角色跳舞、烟花与手机视差。
 - `audio.js`：内嵌音频解码、原生播放回退、混音和同步。
-- `assets/audio-data.js`：内嵌 PCM 音频数据，必须一并上传。
+- `assets/audio-data.js`：内嵌 PCM 音频与原生资源映射，必须一并上传。
+- `assets/background-v5.mp3` / `assets/fireworks-v5.mp3`：手机原生播放器使用的背景音乐与五发烟花音效，已烘焙混音音量。
 - `assets/`：透明角色、海浪与烟花音效、图标及素材说明。
 
 页面使用本地资源，不依赖外部字体、素材网站或第三方脚本。部署后播放音效不会访问 Freesound。素材来源见 [assets/CREDITS.md](assets/CREDITS.md)。

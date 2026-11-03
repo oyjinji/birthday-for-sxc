@@ -16,6 +16,8 @@ button:focus-visible{outline:3px solid #fff7d7;outline-offset:5px}
 .tool svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 .tool.sound{width:36px;padding:9px}
 .tool[aria-pressed=true]{background:#fff1c62e;border-color:#fff3c4aa}
+.audio-retry{position:absolute;z-index:12;top:calc(62px + env(safe-area-inset-top,0px));right:22px;padding:5px 9px;border:1px solid #fff7db45;border-radius:16px;color:#fff7df;background:#6b78aa7a;font-size:10px;letter-spacing:.04em}
+.audio-retry[hidden]{display:none}
 .sound-on{display:none}.sound[aria-pressed=true] .sound-on{display:block}.sound[aria-pressed=true] .sound-off{display:none}
 .scene-ui{position:absolute;inset:0;pointer-events:none;transition:opacity .65s,visibility .65s;opacity:0;visibility:hidden}
 .scene-ui button{pointer-events:auto}

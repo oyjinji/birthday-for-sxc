@@ -1,13 +1,19 @@
-/* Embedded PCM recordings; no fetch, XHR, MP3 decoder, or server is required. */
+/* Native media playback with embedded PCM fallback; no runtime dependencies. */
 (() => {
   'use strict';
   class BeachSound {
-    constructor({button,notify,preferNative=false}) {
-      this.button=button;this.notify=notify;this.mode=preferNative?'native':'web';
+    constructor({button,notify,retryButton=null,preferNative=false,preferHybrid=false}) {
+      const nav=typeof navigator==='object'?navigator:{};
+      const ua=nav.userAgent||'';
+      const appleMobile=/iPhone|iPad|iPod/i.test(ua)||(/Macintosh/i.test(ua)&&nav.maxTouchPoints>1);
+      const mobileWeChat=/MicroMessenger/i.test(ua)&&/Mobile|Android|iPhone|iPad/i.test(ua);
+      this.button=button;this.notify=notify;this.retryButton=retryButton;
+      this.mode=preferNative?'native':(preferHybrid||appleMobile||mobileWeChat?'hybrid':'web');
       this.enabled=false;this.ready=false;this.context=null;this.loading=null;
       this.sources=new Set();this.salvoTimers=new Set();this.oceanSource=null;this.buffers={};
       this.nativeOcean=null;this.nativePool=[];this.lastNativeBatch=null;
       this.needsGesture=false;this.sourceData=window.BEACH_AUDIO;
+      if(this.retryButton)this.retryButton.addEventListener('click',()=>this.retry());
     }
     validateData() {
       if(!this.sourceData||!this.sourceData.ocean||!this.sourceData.burst||!this.sourceData.cluster)
@@ -18,6 +24,14 @@
       return Promise.race([promise,new Promise((_,reject)=>{
         timer=setTimeout(()=>reject(new Error('Audio activation timed out')),ms);
       })]).finally(()=>clearTimeout(timer));
+    }
+    playbackSession() {
+      try{
+        if(typeof navigator==='object'&&navigator.audioSession){
+          navigator.audioSession.type='playback';
+          this.button.dataset.audioSession=navigator.audioSession.type;
+        }
+      }catch(_){ /* Older WebViews fall back to native media playback. */ }
     }
     initWeb() {
       this.validateData();
@@ -38,11 +52,22 @@
     }
     prepareWeb() {
       if(!this.loading) {
-        this.loading=Promise.all(['ocean','burst'].map(key=>this.decodeEmbedded(key))).then(([waves,burst])=>{
-          this.buffers.waves=waves;this.buffers.firework=burst;this.ready=true;
+        const keys=this.mode==='hybrid'?['burst']:['ocean','burst'];
+        this.loading=Promise.all(keys.map(key=>this.decodeEmbedded(key))).then(buffers=>{
+          keys.forEach((key,i)=>{this.buffers[key==='ocean'?'waves':'firework']=buffers[i];});
+          this.ready=true;
         }).catch(error=>{this.loading=null;throw error;});
       }
       return this.loading;
+    }
+    kickWebFromGesture() {
+      this.initWeb();
+      // Some iOS WebViews need an actual buffer start inside the gesture,
+      // rather than just resume() followed by asynchronous decoding.
+      const kick=this.context.createBufferSource();
+      kick.buffer=this.context.createBuffer(1,1,this.context.sampleRate||22050);
+      kick.connect(this.master);kick.onended=()=>kick.disconnect();kick.start(0);
+      return this.context.resume();
     }
     decodeEmbedded(key) {
       const data=this.sourceData[key];
@@ -61,15 +86,62 @@
       media.setAttribute('playsinline','');media.setAttribute('webkit-playsinline','');
       return media;
     }
+    mediaSource(key) {
+      const files=this.sourceData.nativeFiles;
+      if(typeof location==='object'&&/^https?:$/.test(location.protocol)&&files&&files[key])
+        return {src:files[key],volume:1};
+      return {src:this.sourceData[key],volume:key==='ocean'?.38:.40};
+    }
+    initBackgroundMedia() {
+      this.validateData();
+      if(!this.nativeOcean){
+        const source=this.mediaSource('ocean');
+        this.nativeOcean=this.createMedia(source.src);
+        this.nativeOcean.loop=true;this.nativeOcean.volume=source.volume;
+        this.nativeOcean.addEventListener('pause',()=>{
+          if(this.enabled&&!document.hidden)this.needsGesture=true;
+        });
+      }
+    }
+    waitForMediaProgress(media) {
+      const initial=media.currentTime;
+      return new Promise((resolve,reject)=>{
+        const began=Date.now();
+        const check=()=>{
+          if(!media.paused&&media.currentTime>initial+.025)return resolve();
+          if(media.error)return reject(new Error('Native audio failed: '+media.error.code));
+          if(Date.now()-began>1800)return reject(new Error('Native audio clock did not advance'));
+          setTimeout(check,50);
+        };
+        check();
+      });
+    }
+    async playBackgroundMedia() {
+      this.initBackgroundMedia();
+      await this.timeout(Promise.resolve(this.nativeOcean.play()),12000);
+      await this.waitForMediaProgress(this.nativeOcean);
+      this.button.dataset.mediaProgress='verified';
+    }
+    async startHybrid() {
+      // Start both paths synchronously from this same click before any await.
+      const background=this.playBackgroundMedia();
+      let effects;
+      try{
+        effects=this.timeout(Promise.all([this.kickWebFromGesture(),this.prepareWeb()]))
+          .then(()=>this.context.state==='running',()=>false);
+      }catch(_){effects=Promise.resolve(false);}
+      await background;
+      if(!await effects){this.initNative();}
+      this.ready=true;this.needsGesture=false;
+    }
     initNative() {
       this.validateData();this.mode='native';
-      if(!this.nativeOcean) {
-        this.nativeOcean=this.createMedia(this.sourceData.ocean);
-        this.nativeOcean.loop=true;this.nativeOcean.volume=.38;
+      this.initBackgroundMedia();
+      if(!this.nativePool.length) {
         // One pre-mixed five-bang clip per visual salvo avoids mobile limits on
         // simultaneous HTML media players. Two salvos can overlap naturally.
         this.nativePool=Array.from({length:4},()=>({
-          media:this.createMedia(this.sourceData.cluster),priming:false,used:0
+          media:this.createMedia(this.mediaSource('cluster').src),priming:false,used:0
         }));
       }
       this.ready=true;
@@ -89,12 +161,12 @@
     async startNative() {
       this.initNative();this.primeNative();
       // Called synchronously from a click whenever the native path is selected.
-      await this.timeout(Promise.resolve(this.nativeOcean.play()));
+      await this.playBackgroundMedia();
       this.needsGesture=false;
     }
     startOcean() {
       if(!this.enabled||!this.ready||document.hidden)return;
-      if(this.mode==='native') {
+      if(this.mode!=='web') {
         if(this.nativeOcean.paused)Promise.resolve(this.nativeOcean.play())
           .then(()=>{this.needsGesture=false;}).catch(()=>{this.needsGesture=true;});
         return;
@@ -122,7 +194,7 @@
           ||this.nativePool.filter(p=>!p.priming).sort((a,b)=>a.used-b.used)[0];
         if(!item)return;
         item.used=Date.now();item.media.pause();item.media.currentTime=0;
-        item.media.volume=.40;item.media.muted=false;
+        item.media.volume=this.mediaSource('cluster').volume;item.media.muted=false;
         Promise.resolve(item.media.play()).then(()=>{
           item.unlocked=true;this.countBursts(5);
           this.button.dataset.maxConcurrentBursts=String(Math.max(
@@ -176,6 +248,7 @@
       this.button.setAttribute('aria-label',label);this.button.title=label;
       this.button.dataset.audioMode=this.mode;
       this.button.dataset.audioReady=String(this.ready);
+      if(this.retryButton)this.retryButton.hidden=!(this.enabled||this.button.dataset.audioError);
     }
     async toggle() {
       if(this.button.disabled)return;this.button.disabled=true;
@@ -191,36 +264,55 @@
           this.notify('声音已关闭');
         }else {
           this.validateData();
+          this.playbackSession();
+          this.button.setAttribute('aria-busy','true');
           if(this.mode==='web') {
             try{
-              this.initWeb();
               // Both start from the click. No awaited network request can consume
               // the user activation needed by iOS/WeChat.
-              await this.timeout(Promise.all([this.context.resume(),this.prepareWeb()]));
+              await this.timeout(Promise.all([this.kickWebFromGesture(),this.prepareWeb()]));
               if(this.context.state!=='running')throw new Error('Audio context suspended');
             }catch(error){
               this.button.dataset.webAudioFallback=error.name||'Error';
               this.stopSources();if(this.context)this.context.suspend().catch(()=>{});
               await this.startNative();
             }
-          }else await this.startNative();
+          }else if(this.mode==='hybrid')await this.startHybrid();
+          else await this.startNative();
           this.enabled=true;this.needsGesture=false;
-          if(this.mode==='web')this.master.gain.setTargetAtTime(.68,this.context.currentTime,.18);
+          if(this.mode!=='native')this.master.gain.setTargetAtTime(.68,this.context.currentTime,.18);
           this.startOcean();delete this.button.dataset.audioError;
-          this.notify('海浪与轻柔生日旋律已开启，烟花会成组响起');
+          this.notify('背景音乐已开始播放，烟花会成组响起');
         }
       }catch(error) {
         this.enabled=false;this.stopSources();if(this.nativeOcean)this.nativeOcean.pause();
         this.button.dataset.audioError=(error.name||'Error')+': '+error.message;
         this.notify(!this.sourceData?'声音资源未加载完整，请解压并保留全部文件后重试'
           :'请再轻点一次声音按钮，允许浏览器播放声音');
-      }finally{this.updateButton();this.button.disabled=false;}
+      }finally{this.updateButton();this.button.disabled=false;this.button.removeAttribute('aria-busy');}
+    }
+    retry() {
+      if(this.button.disabled)return;
+      this.enabled=false;this.pause();
+      this.mode='native';this.needsGesture=false;
+      if(this.nativeOcean){
+        this.nativeOcean.pause();
+        // The same user action retries the embedded WAV if the hosted MP3 is
+        // blocked by a WebView or an older cached deployment.
+        this.nativeOcean.src=this.nativeOcean.src.startsWith('data:')
+          ?this.mediaSource('ocean').src:this.sourceData.ocean;
+        this.nativeOcean.volume=this.nativeOcean.src.startsWith('data:')?.38:1;
+        this.nativeOcean.load();
+      }
+      return this.toggle();
     }
     unlock() {
       if(!this.enabled)return;
+      this.playbackSession();
       if(this.mode==='native'){this.primeNative();this.startOcean();return;}
+      if(this.mode==='hybrid')this.startOcean();
       if(this.context&&this.context.state!=='running')
-        this.context.resume().then(()=>{this.needsGesture=false;this.startOcean();})
+        this.kickWebFromGesture().then(()=>{this.needsGesture=false;this.startOcean();})
           .catch(()=>{this.needsGesture=true;});
     }
     pause() {
@@ -229,7 +321,8 @@
     }
     resume() {
       if(!this.enabled)return;
-      if(this.mode==='native'){this.startOcean();return;}
+      if(this.mode!=='web')this.startOcean();
+      if(this.mode==='native')return;
       this.context.resume().then(()=>this.startOcean()).catch(()=>{this.needsGesture=true;});
     }
   }

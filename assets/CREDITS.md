@@ -6,7 +6,7 @@
 - 生日音乐：本项目用程序制作的《生日快乐》音乐盒旋律编配，无人声；轻微泛音与短混响，预混音量低于海浪。
 - `firework-burst.mp3`：**Single Firework**，作者 **richwise**。[原作品页面](https://freesound.org/people/richwise/sounds/455453/)。许可：**CC0**。打包时提取单发爆响与尾音，并制作五发错开的叠加版本，避免播放录音前后的无关环境声。
 
-海浪与烟花素材均来自作品页面提供的高质量音频资源。[CC0 许可说明](https://creativecommons.org/publicdomain/zero/1.0/)。网页不从素材网站实时加载声音。v4 将海浪与生日旋律预混为 22.05kHz 单声道 PCM WAV，嵌入 `audio-data.js`；烟花也保持内嵌，运行时不读取音频文件。
+海浪与烟花素材均来自作品页面提供的高质量音频资源。[CC0 许可说明](https://creativecommons.org/publicdomain/zero/1.0/)。网页不从素材网站实时加载声音。海浪、生日旋律与烟花保留内嵌 PCM 回退；v5 另提供 `background-v5.mp3` 与 `fireworks-v5.mp3`，由相同混音编码而成，供手机原生播放。资源均由网站本身提供，不访问外部音频站。
 
 ## 角色
 
