@@ -1,0 +1,13 @@
+Built-in image_gen tool. Source reference: user attachment codex-clipboard-5f5ac856-d882-4f7b-91f6-2e94536d5c48.png.
+
+HACHIWARE:
+Use case: identity-preserve.
+Create ONE transparent PNG sprite of HACHIWARE, the BLUE-AND-WHITE CAT ON THE LEFT of the supplied tiny reference. Match the original Chiikawa manga/anime design in that reference closely, not a generic cat.
+One very squat, round, white continuous head-and-body silhouette, large round cheeks and tiny short legs, NO neck, NO separate narrow torso. Two small triangular blue cat ears with slightly soft corners, a desaturated sky-blue cap covering forehead, separated by a distinctive downwards center parting into the white face. Exact characteristic Hachiware face: two small simple black oval eyes with a single tiny white glint, delicate brows, tiny black w-shaped smiling mouth with a little pink tongue. Soft pink oval cheeks with 3 fine vertical blush strokes. Thin slightly irregular warm charcoal outlines and white flat fill, original hand-drawn 2D anime sticker finish. Small blue tail visible at one side.
+Unlike the source pose, BOTH HANDS MUST BE EMPTY, and both little arms held outward at shoulder height in a happy dancing pose. One tiny foot slightly lifted. NO cup, no drink, no mug, no bottle, no object, no accessory.
+The only subject is Hachiware, no second character.
+Square canvas, transparent alpha background. Top of ears at 10% canvas height, feet at 90%, width about 68% canvas. Centered full body. No floor, shadow, text, symbols or decorations. No black background. No 3D, gradients, fur texture, glossy eyes, thick blue outlines, or tall humanoid body. Strict reference-based original anime anatomy and face.
+
+CHIIKAWA FINAL EDIT:
+Edit the first transparent image of Chiikawa: remove the cup entirely. Give the white character two empty little outstretched dancing arms, like the Hachiware pose in the second image. Remove the motion marks around the feet. Keep the original Chiikawa character design, face, pink cheeks, small round ears, charcoal hand-drawn linework and compact single round body. Do not add anything else. Square transparent background, full body centered, ears at 10% height and feet at 90%, no shadow or background. Only one white Chiikawa character, no Hachiware. Match the second image's framing and scale.
+

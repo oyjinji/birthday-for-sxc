@@ -1,0 +1,69 @@
+:root{color-scheme:light;--ink:#404b75;--cream:#fff5df;--blue:#8597cf;--vh:1vh;font-family:ui-rounded,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+body{display:flex;justify-content:center;align-items:center;background:#b8bfde;background:radial-gradient(ellipse at 50% 35%,#d6d8e9,#a4afd2);color:var(--ink)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;-webkit-touch-callout:none;touch-action:manipulation}
+button:focus-visible{outline:3px solid #fff7d7;outline-offset:5px}
+#experience{isolation:isolate;position:relative;width:100%;max-width:540px;height:calc(var(--vh)*100);height:100svh;height:100dvh;overflow:hidden;background:#8695cf;box-shadow:0 0 100px #555b8126;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.artwork{position:absolute;inset:0;overflow:hidden}
+#scene{display:block;width:100%;height:100%;overflow:visible}
+.toolbar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:calc(18px + env(safe-area-inset-top,0px)) 22px 14px;z-index:10;pointer-events:none;gap:14px}
+.dedication{font-size:11px;letter-spacing:.16em;color:#fdf4df;white-space:nowrap;opacity:.88}
+.dedication span{color:#ffedb1;margin-right:7px;font-size:14px}
+.tools{display:flex;align-items:center;gap:8px;pointer-events:auto}
+.tool{height:36px;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid #fff8e349;border-radius:22px;background:#7382b747;color:#fff7e4;padding:0 11px;transition:background .3s,opacity .3s}
+.tool span{font-size:10px;letter-spacing:.06em}
+.tool svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.tool.sound{width:36px;padding:9px}
+.tool[aria-pressed=true]{background:#fff1c62e;border-color:#fff3c4aa}
+.sound-on{display:none}.sound[aria-pressed=true] .sound-on{display:block}.sound[aria-pressed=true] .sound-off{display:none}
+.scene-ui{position:absolute;inset:0;pointer-events:none;transition:opacity .65s,visibility .65s;opacity:0;visibility:hidden}
+.scene-ui button{pointer-events:auto}
+[data-scene=intro] .intro-ui,[data-scene=wish] .wish-ui,[data-scene=celebration] .celebration-ui{opacity:1;visibility:visible}
+.enter-button{position:absolute;bottom:calc(7.5% + env(safe-area-inset-bottom,0px));left:5%;width:90%;display:flex;flex-direction:column;align-items:center;background:transparent;padding:12px 0;font-size:clamp(14px,4.2vw,19px);font-weight:600;letter-spacing:.09em;line-height:1.6}
+.tiny-star{display:block;font-weight:400;font-size:29px;line-height:1;margin-bottom:13px;color:#64719a;animation:hintFloat 4s ease-in-out infinite}
+.enter-note{font-size:10px;font-weight:400;letter-spacing:.12em;margin-top:12px;opacity:.58}
+.wish-heading{position:absolute;top:23%;left:5%;right:5%;text-align:center;transition:opacity .5s,transform .5s}
+.eyebrow{font-size:10px;letter-spacing:.16em;opacity:.7}
+.wish-heading h1{font-size:clamp(20px,6vw,29px);line-height:1.5;letter-spacing:.06em;font-weight:650;margin:0;color:#3e4974}
+.wish-controls{position:absolute;bottom:calc(6% + env(safe-area-inset-bottom,0px));width:100%;padding:0 11%;text-align:center}
+#wishButton{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:65px;border:1.8px solid #49567e;border-radius:40px;background:#8999d2;color:#fff9e9;font-size:22px;letter-spacing:.13em;box-shadow:0 5px 0 #58678c12;touch-action:none;transition:transform .35s,box-shadow .35s,background .5s}
+#wishButton>*{position:relative}
+.button-star{color:#ffedb1;font-size:26px;line-height:1}
+#wishHelp{font-size:11px;letter-spacing:.07em;line-height:1.7;margin:17px -10px 0;min-height:19px;opacity:.76}
+.is-holding #wishButton{transform:scale(.975);background:#7487c1;box-shadow:inset 0 3px 7px #43517d24,0 0 0 5px #fff5da24}
+.is-holding .wish-heading{opacity:.32;transform:translateY(-3px)}
+.wish-veil{position:absolute;inset:0;background:#3b4278;opacity:0;pointer-events:none;transition:opacity 1.8s}
+.is-holding .wish-veil{opacity:.12}
+.is-revealing .wish-ui{opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
+.birthday-message{position:absolute;top:21.5%;width:100%;text-align:center;opacity:0;transform:translateY(15px) scale(.94);transition:opacity 1.3s .35s,transform 1.5s cubic-bezier(.2,.8,.2,1) .35s}
+[data-scene=celebration] .birthday-message{opacity:1;transform:none}
+.message-star{color:#ffecaf;font-size:28px;line-height:1;margin-bottom:17px;animation:hintFloat 5s ease-in-out infinite}
+.birthday-message h1{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;font-size:clamp(29px,10.4vw,48px);line-height:1.3;letter-spacing:.02em;margin:0;color:#fff5d9;font-weight:900;-webkit-text-stroke:1.2px #49527a;paint-order:stroke fill;text-shadow:0 3px 0 #50578022}
+.birthday-message h1>span{display:block;animation:letterDance 6s ease-in-out infinite;transform-origin:50% 80%}.birthday-name{font-size:.78em;letter-spacing:.10em}.birthday-greeting{white-space:nowrap;animation-delay:-1s!important}.birthday-greeting b{font-size:1.13em;font-weight:900;letter-spacing:.01em;margin-right:.04em;font-variant-numeric:lining-nums}.birthday-message h1 .birthday-name{animation-delay:-3s}
+.birthday-message p{margin:16px 5% 0;color:#fff6e1;font-size:11px;letter-spacing:.13em;line-height:1.8;opacity:.9}
+.replay-button{position:absolute;bottom:calc(2.1% + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);white-space:nowrap;background:transparent;font-size:10px;letter-spacing:.1em;padding:10px 18px;opacity:.64}
+.replay-button span{font-size:15px;vertical-align:-1px;margin-right:4px}
+.characters{opacity:0;transition:opacity 1s}
+.characters.visible{opacity:1}
+.twinkle{animation:twinkle var(--duration,6s) ease-in-out var(--delay,0s) infinite;transform-box:fill-box;transform-origin:center}
+.star-dot{animation:dotTwinkle var(--duration,7s) ease-in-out var(--delay,0s) infinite}
+#flame{transform-origin:0 -189px;animation:flame 3.3s ease-in-out infinite;transition:opacity .35s}
+#candle{opacity:1;transition:opacity .35s ease,transform .35s ease}#candle.candle-removed{opacity:0;transform:translateY(-7px)}
+#smoke{stroke-dasharray:90;stroke-dashoffset:0}
+.smoking #smoke{animation:smoke 1.6s ease-out both}
+.dancer-body{transform-box:view-box;transform-origin:0 0}
+#toast{position:absolute;z-index:20;bottom:calc(19% + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,6px);max-width:84%;width:max-content;background:#48527ce8;border:1px solid #fff7db45;border-radius:20px;padding:11px 17px;color:#fff6e2;font-size:11px;line-height:1.6;letter-spacing:.03em;text-align:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+#toast.visible{opacity:1;transform:translate(-50%,0)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.noscript{position:absolute;inset:35% 10% auto;background:#fff5df;border-radius:20px;padding:24px;text-align:center;line-height:1.8}
+@keyframes twinkle{0%,100%{opacity:.55;transform:scale(.88)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes dotTwinkle{0%,100%{opacity:.32}45%{opacity:.88}}
+@keyframes hintFloat{0%,100%{transform:translateY(0);opacity:.65}50%{transform:translateY(-4px);opacity:1}}
+@keyframes letterDance{0%,65%,100%{transform:translateY(0) rotate(-2deg)}75%{transform:translateY(-5px) rotate(2deg)}85%{transform:translateY(0) rotate(-2deg)}}
+@keyframes flame{0%,100%{transform:scale(1) rotate(-3deg)}45%{transform:scale(.94,1.04) rotate(3deg)}}
+@keyframes smoke{0%{opacity:.65;transform:translateY(0)}100%{opacity:0;transform:translateY(-45px)}}
+@media(min-width:700px){#experience{max-width:min(480px,60vh);border-left:1px solid #ffffff26;border-right:1px solid #ffffff26}.toolbar{padding-left:22px;padding-right:22px}.enter-button{font-size:17px}.birthday-message h1{font-size:clamp(29px,5.6vh,43px)}}
+@media(max-height:650px){.toolbar{padding-top:calc(10px + env(safe-area-inset-top,0px))}.wish-heading{top:23%}.wish-heading h1{font-size:22px;margin-top:0}#wishButton{height:54px;font-size:20px}.wish-controls{bottom:calc(4.5% + env(safe-area-inset-bottom,0px))}#wishHelp{margin-top:10px}.enter-button{bottom:5%}.birthday-message{top:20%}.message-star{margin-bottom:8px}.birthday-message p{margin-top:9px}}
+@media(orientation:landscape) and (max-height:550px){#experience{max-width:calc(100dvh * .65)}.toolbar{padding:7px 10px}.dedication{font-size:8px}.tool{height:27px;padding:0 6px}.tool.sound{width:27px;padding:6px}.tool span{font-size:8px}.tool svg{width:15px;height:15px}.wish-heading h1{font-size:15px}.eyebrow{font-size:8px}.wish-heading{top:23%}#wishButton{height:38px;font-size:16px}#wishHelp{font-size:8px;margin-top:8px}.enter-button{font-size:11px}.enter-note{font-size:7px}.tiny-star{font-size:20px;margin-bottom:5px}.birthday-message h1{font-size:22px;gap:5px}.birthday-message p{font-size:8px}.message-star{font-size:20px}.replay-button{font-size:8px;padding:5px 10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.15s!important}.birthday-message{transition-delay:0s}.tiny-star{opacity:1}}

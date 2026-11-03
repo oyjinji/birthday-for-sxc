@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#8695cf">
+  <meta name="description" content="一片星海，一个愿望，一份只属于你的生日惊喜。">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <title>SXC大王23岁生日快乐</title>
+  <link rel="icon" type="image/svg+xml" href="assets/star.svg">
+  <link rel="preload" as="image" href="assets/chiikawa-v2.webp">
+  <link rel="preload" as="image" href="assets/hachiware-v2.webp">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <script src="assets/audio-data.js?v=4" defer></script>
+  <script src="audio.js?v=4" defer></script>
+  <script src="app.js?v=4" defer></script>
+</head>
+<body>
+  <main id="experience" data-scene="intro" aria-label="星海生日惊喜">
+    <div class="artwork" id="artwork">
+      <svg id="scene" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 1920" role="img" aria-label="蓝紫色星空下的海滩，浪花轻轻拍岸">
+        <defs>
+          <linearGradient id="skyFill" x2="0" y2="1"><stop stop-color="#7b88c6"/><stop offset="1" stop-color="#9eacde"/></linearGradient>
+          <linearGradient id="seaFill" x2="0" y2="1"><stop stop-color="#849ed5"/><stop offset="1" stop-color="#94b2de"/></linearGradient>
+          <linearGradient id="sandFill" x2="0" y2="1"><stop stop-color="#fff0cf"/><stop offset="1" stop-color="#fff5de"/></linearGradient>
+          <radialGradient id="candleGlow"><stop stop-color="#ffefaf" stop-opacity=".7"/><stop offset="1" stop-color="#ffefaf" stop-opacity="0"/></radialGradient>
+          <pattern id="gingham" width="60" height="60" patternUnits="userSpaceOnUse"><rect width="60" height="60" fill="#fffbf0"/><path d="M15 0V60M0 15H60" stroke="#c5b6db" stroke-width="30" opacity=".55"/></pattern>
+          <filter id="softGlow"><feGaussianBlur stdDeviation="3"/></filter>
+          <g id="starShape"><path d="M0-19Q5-5 18 0Q5 5 0 19Q-5 5-18 0Q-5-5 0-19Z" fill="#ffedab" stroke="#43517d" stroke-width="4.5" stroke-linejoin="round"/></g>
+          <g id="cloud"><path d="M-175 70Q-183 19-139 13Q-105-16-77 12Q-56-51-4-38Q36-38 46 3Q86-24 115 8Q158 0 166 39Q199 44 199 70Z" fill="#c9c3e5" stroke="#56628e" stroke-width="5" stroke-linejoin="round"/></g>
+          <g id="shell"><path d="M-32 11Q-48-16-23-22Q-17-43 1-33Q24-40 28-21Q51-9 33 13L21 24H-20Z" fill="#fffaf0" stroke="#697294" stroke-width="4"/><path d="M-13 6L-19-11M1 7V-18M14 6L22-10" stroke="#8b86a4" stroke-width="4" stroke-linecap="round"/></g>
+          <g id="chiikawa">
+            <ellipse cy="3" rx="81" ry="13" fill="#bcaecd" opacity=".20"/>
+            <image href="assets/chiikawa-v2.webp" xlink:href="assets/chiikawa-v2.webp" x="-160" y="-274" width="320" height="320" preserveAspectRatio="xMidYMid meet"/>
+          </g>
+          <g id="hachiware">
+            <ellipse cy="3" rx="87" ry="13" fill="#bcaecd" opacity=".20"/>
+            <image href="assets/hachiware-v2.webp" xlink:href="assets/hachiware-v2.webp" x="-160" y="-295" width="320" height="320" preserveAspectRatio="xMidYMid meet"/>
+          </g>
+        </defs>
+        <g id="camera">
+          <g id="skyLayer"><rect id="sky" x="-1200" y="-6000" width="3500" height="10000" fill="url(#skyFill)"/><g id="stars"></g><g id="moon"><path d="M-29-47Q29-17-5 43Q56 40 58-7Q57-56-29-47Z" fill="#ffedb1" stroke="#4f5984" stroke-width="5.5"/></g></g>
+          <g id="farLayer"><g id="clouds"></g><path id="sea" fill="url(#seaFill)" stroke="#6577a4" stroke-width="4"/><g id="ripples" fill="none" stroke="#edf4ff" stroke-linecap="round"></g></g>
+          <g id="nearLayer"><path id="sand" fill="url(#sandFill)"/><path id="foam" fill="none" stroke="#f6f7ff" stroke-width="19" stroke-linecap="round"/><path id="shoreLine" fill="none" stroke="#5e6c99" stroke-width="4"/><path id="wash" fill="none" stroke="#fffaf0" stroke-width="8" stroke-linecap="round"/><g id="beachDetails"></g></g>
+          <g id="charactersBack" class="characters"></g>
+          <g id="picnic" opacity="0">
+            <ellipse cx="0" cy="9" rx="259" ry="44" fill="#b4a0c5" opacity=".13"/>
+            <path d="M-177-82Q-185-85-190-73L-247 59Q-252 72-235 73H235Q251 73 245 58L190-73Q186-83 176-82Z" fill="url(#gingham)" stroke="#626087" stroke-width="4.5" stroke-linejoin="round"/>
+            <g id="fringe" stroke="#74708f" stroke-width="3.5" stroke-linecap="round"></g>
+            <g id="cake" stroke="#485176" stroke-width="4.8" stroke-linejoin="round" stroke-linecap="round">
+              <ellipse cy="36" rx="135" ry="31" fill="#fffaf2" stroke="#c3b4d3" stroke-width="3"/>
+              <path d="M-114-63V15Q-112 51 0 54Q111 52 114 15V-63Z" fill="#fffaf2"/>
+              <path d="M-112 10Q0 42 112 10" stroke="#f3dfdf" stroke-width="5" fill="none"/>
+              <path d="M-115-68Q-121-105-69-120Q0-143 70-120Q119-106 117-70Q118-51 99-47Q80-43 69-55Q51-36 32-49Q14-33-4-48Q-23-33-43-49Q-64-38-78-54Q-99-40-112-55Z" fill="#fffef5"/>
+              <path d="M-68-126Q-87-110-89-92Q-70-83-49-92Q-51-111-68-126Z" fill="#edacba"/><path d="M68-126Q50-111 48-92Q68-83 89-92Q86-112 68-126Z" fill="#edacba"/>
+              <path d="M0-106Q-19-90-20-72Q0-63 21-72Q18-90 0-106Z" fill="#f2b4bf"/>
+              <path d="M-70-109V-105M67-108V-104M-2-90V-86" stroke="#ba758d" stroke-width="3"/>
+              <g id="candle"><path d="M-10-120V-176Q0-181 10-176V-120" fill="#efb5c7"/><path d="M-8-145L8-157M-8-163L8-175" stroke="#fff3eb" stroke-width="6"/>
+                <g id="flame"><ellipse cx="0" cy="-206" rx="81" ry="97" fill="url(#candleGlow)" stroke="none"/><path d="M0-227Q-31-192 0-189Q28-193 0-227Z" fill="#ffe7a0" stroke="#657091" stroke-width="3.5"/><path d="M0-207Q-11-193 1-193Q11-196 0-207Z" fill="#fff9d8" stroke="none"/></g>
+                <path id="smoke" d="M0-190Q-16-203 0-216Q14-229 0-240" fill="none" stroke="#d7d0e8" stroke-width="4" opacity="0"/>
+              </g>
+            </g>
+            <g id="wishMotes"></g>
+          </g>
+          <g id="charactersFront" class="characters"></g>
+          <g id="fireworks"></g>
+        </g>
+      </svg>
+    </div>
+    <div class="wish-veil" aria-hidden="true"></div>
+    <header class="toolbar">
+      <span class="dedication"><span aria-hidden="true">✦</span> 给特别的你</span>
+      <div class="tools">
+        <button class="tool" id="motionButton" type="button" aria-label="开启手机轻晃视差" aria-pressed="false" title="开启手机轻晃视差"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="10" height="17" rx="3" transform="rotate(12 13 12)"/><path d="M4 7Q0 12 4 17M21 7Q25 12 21 17M12 16h1"/></svg><span>轻晃</span></button>
+        <button class="tool sound" id="soundButton" type="button" aria-label="开启海浪、生日歌与烟花声音" aria-pressed="false" title="开启海浪、生日歌与烟花声音"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9H8L13 5V19L8 15H4Z"/><path class="sound-on" d="M17 8Q22 12 17 16M19 4Q27 12 19 20"/><path class="sound-off" d="M17 9L22 15M22 9L17 15"/></svg></button>
+      </div>
+    </header>
+    <section class="scene-ui intro-ui" aria-label="第一幕：星海">
+      <button class="enter-button" id="enterButton" type="button"><span class="tiny-star" aria-hidden="true">✧</span><span>轻触画面，开启惊喜</span><span class="enter-note">有一份小小的心意，想送给你</span></button>
+    </section>
+    <section class="scene-ui wish-ui" aria-label="第二幕：许愿" aria-hidden="true" inert>
+      <div class="wish-heading"><h1>闭上眼睛，许个愿吧</h1></div>
+      <div class="wish-controls"><button id="wishButton" type="button" aria-label="长按许愿，闭眼后松开揭晓" aria-describedby="wishHelp"><span class="button-star" aria-hidden="true">✦</span><span id="wishLabel">长按许愿</span></button><p id="wishHelp" role="status" aria-live="polite">按住时闭眼，松开后揭晓</p></div>
+    </section>
+    <section class="scene-ui celebration-ui" aria-label="第三幕：生日快乐" aria-hidden="true" inert>
+      <div class="birthday-message"><div class="message-star" aria-hidden="true">✧</div><h1 aria-label="SXC大王23岁生日快乐"><span class="birthday-name">SXC大王</span><span class="birthday-greeting"><b>23</b>岁生日快乐</span></h1><p>愿你的每一个愿望，都慢慢绽放。</p></div>
+      <button class="replay-button" id="replayButton" type="button"><span aria-hidden="true">↻</span> 再许一次愿</button>
+    </section>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <div id="liveStatus" class="sr-only" role="status" aria-live="polite">轻触画面，开启生日惊喜。</div>
+    <noscript><div class="noscript">请开启浏览器的 JavaScript，来拆开这份生日惊喜。</div></noscript>
+  </main>
+</body>
+</html>
